@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace TecnoStore.Core.Entities
 {
-    public  class Carrito
+    public  class Carrito: EntidadBase
     {
-        public int Id { get; set; }
+       
         public int ProductoId { get; set; }
         public int ClienteId { get; set; }
+        public int EstadoId { get; set; }
 
         //Objeto de Navegacion
         public Producto Producto { get; set; }

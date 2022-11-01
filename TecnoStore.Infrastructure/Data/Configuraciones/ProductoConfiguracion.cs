@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TecnoStore.Core.Entities;
 
 namespace TecnoStore.Infrastructure.Data.Configuraciones
@@ -34,6 +29,18 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
             builder.Property(x => x.Precio)
                 .IsRequired()
                 .HasPrecision(10,2);
+
+            var Producto = new Producto
+            {
+                Id = 1,
+                CategoriaId = 1,
+                Nombre = "Cable Tipo C",
+                Stock = 25,
+                Descripcion = "Longitud 25cm",
+                Precio = 250,
+                FechaCreo = DateTime.Now,
+                UsuarioCreo = "Admin"
+            };
         }
     }
 }

@@ -24,6 +24,15 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 .HasMaxLength(100)
                 .IsRequired();
 
+            var categoria = new Categoria
+            {
+                Id = 1,
+                Descripcion = "Accesorios",
+                FechaCreo = DateTime.Now,
+                UsuarioCreo = "Admin"
+            };
+
+            builder.HasData(categoria);
             
         }
     }
