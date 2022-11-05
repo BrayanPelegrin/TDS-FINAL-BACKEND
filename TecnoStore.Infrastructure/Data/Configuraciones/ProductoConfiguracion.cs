@@ -17,6 +17,10 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 .HasForeignKey(x => x.CategoriaId)
                 .HasConstraintName("FK_Productos_Categorias_CategoriaId");
 
+            builder.HasOne(prop => prop.Estado)
+                .WithMany(prop => prop.Productos)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Property(x => x.Nombre)
                 .IsRequired()
                 .HasMaxLength(50);
@@ -30,6 +34,9 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 .IsRequired()
                 .HasPrecision(10,2);
 
+            builder.Property(prop => prop.UsuarioCreo)
+                .IsRequired(false);
+
             var Producto = new Producto
             {
                 Id = 1,
@@ -39,8 +46,11 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 Descripcion = "Longitud 25cm",
                 Precio = 250,
                 FechaCreo = DateTime.Now,
-                UsuarioCreo = "Admin"
+                UsuarioCreo = "Admin",
+                EstadoId = 1
             };
+
+            builder.HasData(Producto);
         }
     }
 }

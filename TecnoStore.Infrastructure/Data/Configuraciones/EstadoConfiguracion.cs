@@ -18,7 +18,11 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
             builder.Property(prop => prop.Descripcion)
                 .IsRequired();
 
+            builder.Property(prop => prop.UsuarioCreo)
+                .IsRequired(false);
+
             builder.Ignore(prop => prop.Estados);
+            builder.Ignore(prop => prop.EstadoId);
 
 
             var Activo = new Estado

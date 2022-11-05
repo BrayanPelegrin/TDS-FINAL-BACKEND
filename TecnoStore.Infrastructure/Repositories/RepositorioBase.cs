@@ -23,7 +23,7 @@ namespace TecnoStore.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return  await Task.Run(() => _entity.ToList().Where(x => x.EstadoId != Convert.ToInt32(Enums.Estados.Eliminado) || x.EstadoId != Convert.ToInt32(Enums.Estados.Descontinuado))); 
+            return  await Task.Run(() => _entity.ToList().Where(x => x.EstadoId != Convert.ToInt32(Enums.Estados.Eliminado) && x.EstadoId != Convert.ToInt32(Enums.Estados.Descontinuado))); 
         }
 
         public async Task<T> GetByIdAsync(int id)
@@ -57,7 +57,7 @@ namespace TecnoStore.Infrastructure.Repositories
             {
                 return null;
             }
-            entidad.EstadoId = 2;
+            entidad.EstadoId = (int)Enums.Estados.Eliminado;
             await Task.Run(() => _entity.Update(entidad));
             await _context.SaveChangesAsync();
             return entidad; 
