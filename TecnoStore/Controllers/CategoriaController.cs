@@ -9,25 +9,24 @@ namespace TecnoStore.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductosController : ControllerBase
+    public class CategoriaController : ControllerBase
     {
-        private readonly IRepository<Producto> _repository;
+        private readonly IRepository<Categoria> _repository;
         private readonly IMapper _mapper;
-
-        public ProductosController(IRepository<Producto> repository, IMapper mapper)
+        public CategoriaController(IRepository<Categoria> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() 
+        public async Task<IActionResult> Get()
         {
             var response = new ApiResponse();
-            var query = await Task.FromResult(_repository.GetAllWithInclude(x=> x.Categoria).Result.ToList());
-            var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
-       
-            if(queryMapped.Count() == 0)
+            var query = await _repository.GetAllWithInclude(x=>x.Productos);
+            var queryMapped = _mapper.Map<IEnumerable<CategoriaDTO>>(query);
+
+            if (query.Count() == 0)
             {
                 response.Mensaje = "No Hay Registros";
             }
@@ -41,64 +40,65 @@ namespace TecnoStore.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(ProductoDTO producto)
+        public async Task<IActionResult> Save(CategoriaDTO producto)
         {
-            var ProductoMapeado = _mapper.Map<Producto>(producto);
-
-             var ProductoGuardado = await _repository.SaveAsync(ProductoMapeado);
+            var CategoriaMapeada = new Categoria
+            {
+                Descripcion = producto.Descripcion,
+                EstadoId = (int)Enums.Estados.Activo,
+                FechaCreo = DateTime.Now,
+                UsuarioCreo = "Admin"
+            };
+            var CategoriaGuardada = await _repository.SaveAsync(CategoriaMapeada);
             var response = new ApiResponse();
 
-            if (ProductoGuardado == null)
+            if (CategoriaGuardada == null)
             {
-                response.Mensaje = "Ocurrio un Error al Crear el Producto";
+                response.Mensaje = "Ocurrio un Error al Crear La Categoria";
             }
             else
             {
                 response.Success = true;
                 response.Mensaje = "Registro Exitoso";
-                response.Result = ProductoGuardado;
+                response.Result = CategoriaGuardada;
             }
             return Ok(response);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(ProductoDTO producto, int id) 
+        public async Task<IActionResult> Update(CategoriaDTO producto, int id)
         {
             var response = new ApiResponse();
-            var productoBuscado = await _repository.GetByIdAsync(id);
-            if (productoBuscado == null)
+            var CategoriaBuscada = await _repository.GetByIdAsync(id);
+            if (CategoriaBuscada == null)
             {
-                response.Mensaje = "El Producto no existe";
+                response.Mensaje = "La Categoria no existe";
             }
             else
             {
-                var ProductoMapeado = new Producto
+                var CategoriaMapeada = new Categoria
                 {
-                    Id = productoBuscado.Id,
-                    Nombre = producto.Nombre,
-                    CategoriaId = producto.CategoriaId,
+                    Id = CategoriaBuscada.Id,
                     Descripcion = producto.Descripcion,
                     EstadoId = (int)Enums.Estados.Activo,
-                    Stock = producto.Stock,
-                    Precio = producto.Precio,
                     FechaCreo = DateTime.Now,
                     UsuarioCreo = "Admin"
                 };
-                var ProductoGuardado = await _repository.SaveAsync(ProductoMapeado);
+                var CategoriaGuardada = await _repository.SaveAsync(CategoriaMapeada);
 
 
-                if (ProductoGuardado == null)
+                if (CategoriaGuardada == null)
                 {
-                    response.Mensaje = "Ocurrio un Error al Crear el Producto";
+                    response.Mensaje = "Ocurrio un Error al Crear La Categoria";
                 }
                 else
                 {
                     response.Success = true;
                     response.Mensaje = "Registro Exitoso";
-                    response.Result = ProductoGuardado;
+                    response.Result = CategoriaGuardada;
                 }
             }
-            
+
             return Ok(response);
         }
 
@@ -106,23 +106,21 @@ namespace TecnoStore.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var response = new ApiResponse();
-            var productoBuscado = await _repository.GetByIdAsync(id);
-            if (productoBuscado == null)
+            var CategoriaBuscada = await _repository.GetByIdAsync(id);
+            if (CategoriaBuscada == null)
             {
-                response.Mensaje = "El Producto no existe";
+                response.Mensaje = "La Categoria no existe";
             }
             else
             {
-                productoBuscado = await _repository.DeleteAsync(productoBuscado);
+                CategoriaBuscada = await _repository.DeleteAsync(CategoriaBuscada);
                 response.Success = true;
                 response.Mensaje = "Registro Exitoso";
-                response.Result = productoBuscado;
+                response.Result = CategoriaBuscada;
             }
 
 
-                return Ok(response);
+            return Ok(response);
         }
-
-
     }
 }

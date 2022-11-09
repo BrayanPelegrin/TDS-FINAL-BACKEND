@@ -1,20 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using TecnoStore.Core.Interfaces;
 using TecnoStore.Infrastructure.Data;
+using TecnoStore.Infrastructure.Repositories;
 
-namespace TecnoStore.Infrastructure
-{
-    public static class RegistroDeServicios
+public static class RegistroDeServicios
     {
-        public static void Servicios(this IServiceCollection servicios, IConfiguration configuration)
+    /*UseLazyLoadingProxies()*/
+    public static void AddContext(this IServiceCollection services, IConfiguration configuration)
         {
-            servicios.AddDbContext<TecnoStoreContext>(options => options.UseSqlServer(configuration.GetConnectionString("CadenaSQL")));
+            services.AddDbContext<TecnoStoreContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("CadenaSQL"));
+                
+            });
+        }
+
+        public static void AddService(this IServiceCollection services)
+        {
+            
+            services.AddScoped(typeof(IRepository<>), typeof(RepositorioBase<>));
         }
     }
-}
+

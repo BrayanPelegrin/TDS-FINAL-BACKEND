@@ -24,6 +24,24 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(prop => prop.UsuarioCreo)
+                .IsRequired(false);
+
+            builder.HasOne(prop => prop.Estado)
+               .WithMany(prop => prop.Categorias)
+               .OnDelete(DeleteBehavior.NoAction);
+
+
+            var categoria = new Categoria
+            {
+                Id = 1,
+                Descripcion = "Accesorios",
+                FechaCreo = DateTime.Now,
+                UsuarioCreo = "Admin",
+                EstadoId = 1
+            };
+
+            builder.HasData(categoria);
             
         }
     }

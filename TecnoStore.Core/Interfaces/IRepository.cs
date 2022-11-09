@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace TecnoStore.Core.Interfaces
 {
@@ -10,9 +6,9 @@ namespace TecnoStore.Core.Interfaces
     {
         public Task<IEnumerable<T>> GetAllAsync();
         public Task<T> GetByIdAsync(int id);
-        public Task<T> AddAsync(T entity);
-        public Task<T> UpdateAsync(T entity);
+        public Task<T> SaveAsync(T entity);
         public Task<T> DeleteAsync(T entity);
+        public Task<IQueryable<T>> GetAllWithInclude(params Expression<Func<T,object>>[] IncludeProperties);
 
     }
 }
