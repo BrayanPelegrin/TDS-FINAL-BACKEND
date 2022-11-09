@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TecnoStore.Core.Entities;
@@ -13,7 +14,7 @@ namespace TecnoStore.Infrastructure.Repositories
     public class RepositorioBase<T>: IRepository<T> where T: EntidadBase 
     {
         private readonly TecnoStoreContext _context;
-        protected readonly DbSet<T> _entity;
+        protected  readonly DbSet<T> _entity;
 
         public RepositorioBase(TecnoStoreContext context)
         {
@@ -63,6 +64,19 @@ namespace TecnoStore.Infrastructure.Repositories
             return entidad; 
         }
 
-         
+        public async Task<IQueryable<T>> GetAllWithInclude(params Expression<Func<T, object>>[] IncludeProperties)
+        {
+            IQueryable<T> query = _entity;
+            query = await Task.Run(() =>
+            {
+                foreach (var include in IncludeProperties)
+                {
+                    query = query.Include(include);
+                }
+                return query;
+            });
+            
+            return query;
+        }
     }
 }

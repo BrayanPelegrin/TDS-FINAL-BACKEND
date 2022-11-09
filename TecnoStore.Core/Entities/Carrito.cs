@@ -14,7 +14,7 @@ namespace TecnoStore.Core.Entities
         public int EstadoId { get; set; }
 
         //Objeto de Navegacion
-        public Producto Producto { get; set; }
+        public virtual Producto Producto { get; set; }
        
 
     }

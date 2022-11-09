@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TecnoStore.Core.DTOs;
 using TecnoStore.Core.Entities;
@@ -11,19 +12,22 @@ namespace TecnoStore.Api.Controllers
     public class ProductosController : ControllerBase
     {
         private readonly IRepository<Producto> _repository;
+        private readonly IMapper _mapper;
 
-        public ProductosController(IRepository<Producto> repository)
+        public ProductosController(IRepository<Producto> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get() 
         {
             var response = new ApiResponse();
-            var query = await _repository.GetAllAsync();
+            var query = await Task.FromResult(_repository.GetAllWithInclude(x=> x.Categoria).Result.ToList());
+            var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
        
-            if(query.Count() == 0)
+            if(queryMapped.Count() == 0)
             {
                 response.Mensaje = "No Hay Registros";
             }
@@ -31,7 +35,7 @@ namespace TecnoStore.Api.Controllers
             {
                 response.Success = true;
                 response.Mensaje = "Consulta Exitosa";
-                response.Result = query;
+                response.Result = queryMapped;
             }
             return Ok(response);
         }
@@ -39,17 +43,8 @@ namespace TecnoStore.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(ProductoDTO producto)
         {
-            var ProductoMapeado = new Producto
-            {
-                Nombre = producto.Nombre,
-                CategoriaId = producto.CategoriaId,
-                Descripcion = producto.Descripcion,
-                EstadoId = (int)Enums.Estados.Activo,
-                Stock = producto.Stock,
-                Precio = producto.Precio,
-                FechaCreo = DateTime.Now,
-                UsuarioCreo = "Admin"
-            };
+            var ProductoMapeado = _mapper.Map<Producto>(producto);
+
              var ProductoGuardado = await _repository.SaveAsync(ProductoMapeado);
             var response = new ApiResponse();
 

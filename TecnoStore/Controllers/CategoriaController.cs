@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TecnoStore.Core.DTOs;
 using TecnoStore.Core.Entities;
@@ -11,17 +12,19 @@ namespace TecnoStore.Api.Controllers
     public class CategoriaController : ControllerBase
     {
         private readonly IRepository<Categoria> _repository;
-
-        public CategoriaController(IRepository<Categoria> repository)
+        private readonly IMapper _mapper;
+        public CategoriaController(IRepository<Categoria> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var response = new ApiResponse();
-            var query = await _repository.GetAllAsync();
+            var query = await _repository.GetAllWithInclude(x=>x.Productos);
+            var queryMapped = _mapper.Map<IEnumerable<CategoriaDTO>>(query);
 
             if (query.Count() == 0)
             {
@@ -31,7 +34,7 @@ namespace TecnoStore.Api.Controllers
             {
                 response.Success = true;
                 response.Mensaje = "Consulta Exitosa";
-                response.Result = query;
+                response.Result = queryMapped;
             }
             return Ok(response);
         }

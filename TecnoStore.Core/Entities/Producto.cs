@@ -15,10 +15,9 @@ namespace TecnoStore.Core.Entities
         public decimal Precio { get; set; }
         public int Stock { get; set; }
         
-        public virtual Estado Estado { get; set; }
-
 
         //Propiedades De Navegacion
         public virtual Categoria Categoria { get; set; }
+        public virtual Estado Estado { get; set; }
     }
 }

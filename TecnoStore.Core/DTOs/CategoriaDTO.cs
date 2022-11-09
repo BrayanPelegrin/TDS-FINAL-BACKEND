@@ -9,5 +9,7 @@ namespace TecnoStore.Core.DTOs
     public class CategoriaDTO
     {
         public string Descripcion { get; set; }= String.Empty;
+
+        public virtual ICollection<ProductoDTO> Productos { get; set; }
     }
 }
