@@ -17,7 +17,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-}); 
+});
+
+//CORS
+builder.Services.AddCors(x => x.AddPolicy("CorsPolicy", config =>
+{
+    config.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+}));
 
 // OBTENER TOKEN DESDE APP-SETTINGS
 
@@ -57,6 +63,8 @@ builder.Services.AddTransient<ILogin<LoginDTO>, UsuarioServices>();
 
 var app = builder.Build();
 
+
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
