@@ -8,11 +8,12 @@ using TecnoStore.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Add services to the container.
 builder.Services.AddContext(builder.Configuration);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddService();
-// Add services to the container.
-
+builder.Services.AddIdentity();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;

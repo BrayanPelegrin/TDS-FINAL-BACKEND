@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace TecnoStore.Infrastructure.Data
 {
-    public class TecnoStoreContext: DbContext
+    public class TecnoStoreContext: IdentityDbContext
     {
         public TecnoStoreContext()
         {
@@ -16,6 +17,7 @@ namespace TecnoStore.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(TecnoStoreContext).Assembly);
         }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TecnoStore.Infrastructure.Data;
 
@@ -11,9 +12,10 @@ using TecnoStore.Infrastructure.Data;
 namespace TecnoStore.Infrastructure.Migrations
 {
     [DbContext(typeof(TecnoStoreContext))]
-    partial class TecnoStoreContextModelSnapshot : ModelSnapshot
+    [Migration("20221112204335_implementacion-identity")]
+    partial class implementacionidentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
