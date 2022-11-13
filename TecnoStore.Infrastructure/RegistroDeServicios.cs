@@ -2,8 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
-using TecnoStore.Core.DTOs;
+using TecnoStore.Core.Entities.IdentityModels;
 using TecnoStore.Core.Interfaces;
 using TecnoStore.Core.Services;
 using TecnoStore.Infrastructure.Data;
@@ -27,14 +26,14 @@ public static class RegistroDeServicios
     {
 
         services.AddScoped(typeof(IRepository<>), typeof(RepositorioBase<>));
-        services.AddTransient<ITokenManager<UsuarioDTO>, UsuarioServices>();
+        services.AddTransient<ITokenManager<ApplicationUser>, UsuarioServices>();
 
     }
 
     public static void AddIdentity(this IServiceCollection services)
     {
 
-        services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<TecnoStoreContext>()
             .AddDefaultTokenProviders();
 

@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TecnoStore.Core.DTOs;
+using TecnoStore.Core.Entities.IdentityModels;
 using TecnoStore.Core.Interfaces;
-using TecnoStore.Core.Services;
 
 namespace TecnoStore.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class SesionController : ControllerBase
     {
-        private readonly ITokenManager<UsuarioDTO> _tokenGenerator;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ITokenManager<ApplicationUser> _tokenGenerator;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public LoginController(ITokenManager<UsuarioDTO> tokenGenerator, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public SesionController(ITokenManager<ApplicationUser> tokenGenerator, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _tokenGenerator = tokenGenerator;
             _userManager = userManager;
@@ -26,16 +24,17 @@ namespace TecnoStore.Api.Controllers
         // GET: UsuarioController
 
         [HttpPost]
-        public async Task<IActionResult> Login(UsuarioDTO user)
+        public async Task<IActionResult> Login(LoginDTO user)
         {
             var response = new ApiResponse();
-            var isSuccess = await _signInManager.PasswordSignInAsync(user.Correo, user.Password, isPersistent: false, lockoutOnFailure: false);
+            var isSuccess = await _signInManager.PasswordSignInAsync(user.Email, user.Password, isPersistent: false, lockoutOnFailure: false);
             if (isSuccess.Succeeded)
             {
-                var token = _tokenGenerator.TokenGenerator(user);
+                var usuario = await _userManager.FindByEmailAsync(user.Email);
+                var token = _tokenGenerator.TokenGenerator(usuario);
                 response.Success = true;
                 response.Mensaje = "Inicio de Sesion Exitoso!";
-                response.Result = _tokenGenerator.TokenGenerator(user);
+                response.Result = token;
             }
             else
             {
@@ -44,25 +43,26 @@ namespace TecnoStore.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Register(UsuarioDTO user)
         {
             var response = new ApiResponse();
-            if (user == null || string.IsNullOrEmpty(user.Correo) || string.IsNullOrEmpty(user.Password))
+            if (user == null || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
             {
                 response.Mensaje = "El Usuario es invalido";
                 return BadRequest(response);
             }
-            var userToCreate = new IdentityUser
+            var userToCreate = new ApplicationUser
             {
-                UserName = user.UserName,
-                Email = user.Correo,
+                NombreCompleto = user.NombreCompleto,
+                UserName = user.Email,
+                Email = user.Email,
             };
 
             var isSuccess = await _userManager.CreateAsync(userToCreate, user.Password);
             if (isSuccess.Succeeded)
             {
-                var token = _tokenGenerator.TokenGenerator(user);
+                var token = _tokenGenerator.TokenGenerator(userToCreate);
                 response.Success = true;
                 response.Mensaje = "Usuario Creado Exitosamente";
                 response.Result = token;
@@ -70,7 +70,6 @@ namespace TecnoStore.Api.Controllers
             else
             {
                 response.Mensaje = "Ocurrio Un Error";
-                response.Result = isSuccess.Errors;
             }
 
             return Ok(response);

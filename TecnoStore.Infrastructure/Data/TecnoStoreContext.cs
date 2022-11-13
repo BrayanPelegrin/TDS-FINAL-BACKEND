@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using TecnoStore.Core.Entities.IdentityModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace TecnoStore.Infrastructure.Data
 {
-    public class TecnoStoreContext: IdentityDbContext
+    public class TecnoStoreContext: IdentityDbContext<ApplicationUser>
     {
         public TecnoStoreContext()
         {
@@ -14,6 +16,7 @@ namespace TecnoStore.Infrastructure.Data
         {
 
         }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
