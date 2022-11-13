@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using TecnoStore.Core.DTOs;
 using TecnoStore.Core.Interfaces;
+using TecnoStore.Core.Services;
 using TecnoStore.Infrastructure.Data;
 using TecnoStore.Infrastructure.Repositories;
 
@@ -25,6 +27,7 @@ public static class RegistroDeServicios
     {
 
         services.AddScoped(typeof(IRepository<>), typeof(RepositorioBase<>));
+        services.AddTransient<ITokenManager<UsuarioDTO>, UsuarioServices>();
 
     }
 

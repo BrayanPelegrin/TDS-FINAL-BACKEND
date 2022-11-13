@@ -9,11 +9,8 @@ using TecnoStore.Core.Interfaces;
 
 namespace TecnoStore.Core.Services
 {
-    public class UsuarioServices : ILogin<LoginDTO>
+    public class UsuarioServices : ITokenManager<UsuarioDTO>
     {
-        // LISTA TEMPORAL DE USUARIOS.
-        List<UsuarioDTO> user = new List<UsuarioDTO>();
-
         private readonly AppSettings _appSettings;
 
         // CONSTRUCTOR PARA OBTENER EL TOKEN.
@@ -22,36 +19,13 @@ namespace TecnoStore.Core.Services
             _appSettings = appSettings.Value;
         }
 
-        void Insertar()
+        public string TokenGenerator(UsuarioDTO Credenciales)
         {
 
-            user.Add(new UsuarioDTO()
-            {
-                ID = 1,
-                Name = "Miguel",
-                Correo = "miguelangelcruz200217@gmail.com",
-                Password = "miguel2002"
-            });
-
-        }
-
-        public LoginDTO ValidarSesion(LoginDTO Credenciales)
-        {
-            // LLAMANDO EL METODO PARA INSERTAR DATOS EN LA LISTA.
-            Insertar();
-
-            var usuario = user.Where(d => d.Correo == Credenciales.Correo 
-                          && d.Password == Credenciales.Password).FirstOrDefault();
-
-            if (usuario == null)
-            {
-                return null;
-            }
-
-            Credenciales.Token = getToken(usuario);
+            var token = getToken(Credenciales);
 
             // RETORNANDO LAS CREDENCIALES JUNTO AL TOKEN.
-            return Credenciales;
+            return token;
         }
 
         private string getToken(UsuarioDTO user)
@@ -65,17 +39,18 @@ namespace TecnoStore.Core.Services
 
                     new Claim[]
                     {
-                        new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
-                        new Claim(ClaimTypes.Email, user.Correo)
+                        new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Correo),
+                        new Claim(ClaimTypes.Role, "Todavia no eres nadie en la vida")
                     }
 
                     ),
 
                 // EXPIRACION DEL TOKEN.
-                Expires = DateTime.UtcNow.AddDays(60),
-                
+                Expires = DateTime.UtcNow.AddMinutes(20),
+
                 // ENCRIPTAR INFORMACION.
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), 
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature),
 
             };

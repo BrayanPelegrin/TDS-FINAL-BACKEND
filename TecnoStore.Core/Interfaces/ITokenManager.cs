@@ -7,9 +7,9 @@ using TecnoStore.Core.DTOs;
 
 namespace TecnoStore.Core.Interfaces
 {
-    public interface ILogin<T>
+    public interface ITokenManager<T>
     {
-        public T ValidarSesion(T t);
+        public string TokenGenerator(T t);
 
     }
 }

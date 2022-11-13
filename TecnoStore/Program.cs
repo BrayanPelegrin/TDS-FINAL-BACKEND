@@ -60,8 +60,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddTransient<ILogin<LoginDTO>, UsuarioServices>();
-
 var app = builder.Build();
 
 

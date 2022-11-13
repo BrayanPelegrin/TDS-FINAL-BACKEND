@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TecnoStore.Core.DTOs;
@@ -121,6 +122,28 @@ namespace TecnoStore.Api.Controllers
 
 
                 return Ok(response);
+        }
+        // ESTE METODO ES PARA PROBAR EL TOKEN, MAS ADELANTE SERA APLICADO A TODOS LOS ENDPOINTS
+        [Authorize]
+        [HttpGet]
+        [Route("JWT")]
+        public async Task<IActionResult> GetWithJWT()
+        {
+            var response = new ApiResponse();
+            var query = await Task.FromResult(_repository.GetAllWithInclude(x => x.Categoria).Result.ToList());
+            var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
+
+            if (queryMapped.Count() == 0)
+            {
+                response.Mensaje = "No Hay Registros";
+            }
+            else
+            {
+                response.Success = true;
+                response.Mensaje = "Consulta Exitosa";
+                response.Result = queryMapped;
+            }
+            return Ok(response);
         }
 
 
