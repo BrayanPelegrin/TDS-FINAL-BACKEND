@@ -8,8 +8,7 @@ namespace TecnoStore.Api.Mappings
     {
         public AutoMapperProfiles()
         {
-            CreateMap<Producto, ProductoDTO>()
-                .ForPath(src=> src.Categoria.Descripcion, dst => dst.MapFrom(opt => opt.Categoria.Descripcion)).ReverseMap();
+            CreateMap<Producto, ProductoDTO>().ReverseMap();
 
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
                 

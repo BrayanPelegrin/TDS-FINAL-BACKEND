@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TecnoStore.Core.Entities.IdentityModels;
-using Microsoft.AspNetCore.Identity;
 
 namespace TecnoStore.Infrastructure.Data
 {

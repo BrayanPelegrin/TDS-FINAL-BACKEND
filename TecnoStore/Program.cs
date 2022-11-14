@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TecnoStore.Core.Common;
-using TecnoStore.Core.DTOs;
-using TecnoStore.Core.Interfaces;
-using TecnoStore.Core.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

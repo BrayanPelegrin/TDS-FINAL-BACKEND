@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TecnoStore.Core.Entities
+﻿namespace TecnoStore.Core.Entities
 {
     public class Estado: EntidadBase
     {
