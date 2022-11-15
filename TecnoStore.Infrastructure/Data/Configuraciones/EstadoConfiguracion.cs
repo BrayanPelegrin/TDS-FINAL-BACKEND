@@ -8,6 +8,7 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
     {
         public void Configure(EntityTypeBuilder<Estado> builder)
         {
+            builder.ToTable("Estados");
             builder.HasKey(prop => prop.Id);
 
             builder.Property(prop => prop.Descripcion)
@@ -24,28 +25,28 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
             {
                 Id = 1,
                 Descripcion = "Activo",
-
+                UsuarioCreo = "Admin",
             };
 
             var Eliminado = new Estado
             {
                 Id = 2,
                 Descripcion = "Eliminado",
-
+                UsuarioCreo = "Admin",
             };
 
             var Agotado = new Estado
             {
                 Id = 3,
                 Descripcion = "Agotado",
-
+                UsuarioCreo = "Admin",
             };
 
             var Descontinuado = new Estado
             {
                 Id = 4,
                 Descripcion = "Descontinuado",
-
+                UsuarioCreo = "Admin",
             };
 
             builder.HasData(Activo, Eliminado, Agotado, Descontinuado);

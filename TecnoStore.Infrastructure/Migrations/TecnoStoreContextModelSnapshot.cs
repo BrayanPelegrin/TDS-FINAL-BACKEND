@@ -189,7 +189,15 @@ namespace TecnoStore.Infrastructure.Migrations
                             Id = 1,
                             Descripcion = "Accesorios",
                             EstadoId = 1,
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(3065),
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(5821),
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descripcion = "Laptops",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(5823),
                             UsuarioCreo = "Admin"
                         });
                 });
@@ -214,32 +222,36 @@ namespace TecnoStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Estado");
+                    b.ToTable("Estados", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Descripcion = "Activo",
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(4619)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(8025),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 2,
                             Descripcion = "Eliminado",
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(4622)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(8029),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 3,
                             Descripcion = "Agotado",
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(4623)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(8030),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 4,
                             Descripcion = "Descontinuado",
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(4623)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(8030),
+                            UsuarioCreo = "Admin"
                         });
                 });
 
@@ -364,9 +376,69 @@ namespace TecnoStore.Infrastructure.Migrations
                             CategoriaId = 1,
                             Descripcion = "Longitud 25cm",
                             EstadoId = 1,
-                            FechaCreo = new DateTime(2022, 11, 13, 0, 30, 40, 476, DateTimeKind.Local).AddTicks(6008),
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9626),
                             Nombre = "Cable Tipo C",
                             Precio = 250m,
+                            Stock = 30,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoriaId = 1,
+                            Descripcion = "40 horas de reproduccion continua, Audio 8D, BassBost",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9631),
+                            Nombre = "Beats Solo3 Wiriless",
+                            Precio = 7849.99m,
+                            Stock = 10,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoriaId = 1,
+                            Descripcion = "Mouse inalámbrico con sensor óptico DPI de entrada más rápida",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9632),
+                            Nombre = "Razer Gaming Viper",
+                            Precio = 1249.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoriaId = 2,
+                            Descripcion = "chip Apple M1, pantalla Retina de 13 pulgadas, 8 GB de RAM, almacenamiento SSD de 256 GB",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9634),
+                            Nombre = "Apple MacBook Air 2020",
+                            Precio = 1249.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoriaId = 2,
+                            Descripcion = "FHD de 15.6 pulgadas 144Hz, Intel 10-Core i7-12650H, GeForce RTX 3070, DDR5 de 32 GB, SSD PCIe de 1 TB",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9635),
+                            Nombre = "ASUS TUF Dash F15 2022",
+                            Precio = 79999.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoriaId = 2,
+                            Descripcion = "Pantalla táctil, pantalla UHD+ de 13.4 pulgadas, delgada y ligera, Intel Core i7-1195G7, 16GB LPDDR4x RAM, 512GB SSD",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 57, 11, 233, DateTimeKind.Local).AddTicks(9637),
+                            Nombre = "Dell Laptop XPS 13 9310",
+                            Precio = 66729.99m,
                             Stock = 25,
                             UsuarioCreo = "Admin"
                         });
@@ -440,8 +512,7 @@ namespace TecnoStore.Infrastructure.Migrations
                         .WithMany("Productos")
                         .HasForeignKey("CategoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Productos_Categorias_CategoriaId");
+                        .IsRequired();
 
                     b.HasOne("TecnoStore.Core.Entities.Estado", "Estado")
                         .WithMany("Productos")

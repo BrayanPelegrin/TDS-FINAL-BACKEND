@@ -12,8 +12,8 @@ using TecnoStore.Infrastructure.Data;
 namespace TecnoStore.Infrastructure.Migrations
 {
     [DbContext(typeof(TecnoStoreContext))]
-    [Migration("20221112204335_implementacion-identity")]
-    partial class implementacionidentity
+    [Migration("20221114235456_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,71 +74,6 @@ namespace TecnoStore.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -256,7 +191,15 @@ namespace TecnoStore.Infrastructure.Migrations
                             Id = 1,
                             Descripcion = "Accesorios",
                             EstadoId = 1,
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(4614),
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(1977),
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descripcion = "Laptops",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(1979),
                             UsuarioCreo = "Admin"
                         });
                 });
@@ -281,33 +224,106 @@ namespace TecnoStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Estado");
+                    b.ToTable("Estados", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Descripcion = "Activo",
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(7105)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(5077),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 2,
                             Descripcion = "Eliminado",
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(7109)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(5082),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 3,
                             Descripcion = "Agotado",
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(7110)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(5083),
+                            UsuarioCreo = "Admin"
                         },
                         new
                         {
                             Id = 4,
                             Descripcion = "Descontinuado",
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(7111)
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(5084),
+                            UsuarioCreo = "Admin"
                         });
+                });
+
+            modelBuilder.Entity("TecnoStore.Core.Entities.IdentityModels.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("TecnoStore.Core.Entities.Producto", b =>
@@ -362,9 +378,69 @@ namespace TecnoStore.Infrastructure.Migrations
                             CategoriaId = 1,
                             Descripcion = "Longitud 25cm",
                             EstadoId = 1,
-                            FechaCreo = new DateTime(2022, 11, 12, 16, 43, 34, 753, DateTimeKind.Local).AddTicks(9588),
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7687),
                             Nombre = "Cable Tipo C",
                             Precio = 250m,
+                            Stock = 30,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoriaId = 1,
+                            Descripcion = "40 horas de reproduccion continua, Audio 8D, BassBost",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7692),
+                            Nombre = "Beats Solo3 Wiriless",
+                            Precio = 7849.99m,
+                            Stock = 10,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoriaId = 1,
+                            Descripcion = "Mouse inalámbrico con sensor óptico DPI de entrada más rápida",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7694),
+                            Nombre = "Razer Gaming Viper",
+                            Precio = 1249.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoriaId = 2,
+                            Descripcion = "chip Apple M1, pantalla Retina de 13 pulgadas, 8 GB de RAM, almacenamiento SSD de 256 GB",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7696),
+                            Nombre = "Apple MacBook Air 2020",
+                            Precio = 1249.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoriaId = 2,
+                            Descripcion = "FHD de 15.6 pulgadas 144Hz, Intel 10-Core i7-12650H, GeForce RTX 3070, DDR5 de 32 GB, SSD PCIe de 1 TB",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7698),
+                            Nombre = "ASUS TUF Dash F15 2022",
+                            Precio = 79999.99m,
+                            Stock = 25,
+                            UsuarioCreo = "Admin"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoriaId = 2,
+                            Descripcion = "Pantalla táctil, pantalla UHD+ de 13.4 pulgadas, delgada y ligera, Intel Core i7-1195G7, 16GB LPDDR4x RAM, 512GB SSD",
+                            EstadoId = 1,
+                            FechaCreo = new DateTime(2022, 11, 14, 19, 54, 56, 717, DateTimeKind.Local).AddTicks(7700),
+                            Nombre = "Dell Laptop XPS 13 9310",
+                            Precio = 66729.99m,
                             Stock = 25,
                             UsuarioCreo = "Admin"
                         });
@@ -381,7 +457,7 @@ namespace TecnoStore.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TecnoStore.Core.Entities.IdentityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -390,7 +466,7 @@ namespace TecnoStore.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TecnoStore.Core.Entities.IdentityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -405,7 +481,7 @@ namespace TecnoStore.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TecnoStore.Core.Entities.IdentityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -414,7 +490,7 @@ namespace TecnoStore.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("TecnoStore.Core.Entities.IdentityModels.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -17,61 +17,68 @@ namespace TecnoStore.Infrastructure.Repositories
             _entity = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public IEnumerable<T> GetAll()
         {
-            return  await Task.Run(() => _entity.ToList().Where(x => x.EstadoId != Convert.ToInt32(Enums.Estados.Eliminado) && x.EstadoId != Convert.ToInt32(Enums.Estados.Descontinuado))); 
+            return  _entity.ToList();
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public T GetById(int id)
         {
-            return  await Task.Run(()=>  _entity.AsNoTracking().Where(x => x.Id == id).First());
+            return   _entity.AsNoTracking().Where(x => x.Id == id).First();
         }
 
-        public async Task<T> SaveAsync(T entity)
+        public T Save(T entity)
         {
             
             if(entity.Id == 0)
             {
-                 await _entity.AddAsync(entity);
+                  _entity.Add(entity);
             }
             else
             {
-                await Task.Run(() => _entity.Update(entity));
+                _entity.Update(entity);
             }
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return entity;
 
         }
 
        
 
-        public async Task<T> DeleteAsync(T entity)
+        public T Delete(T entity)
         {
-            var entidad = await Task.Run(() => _entity.AsNoTracking().Where(x => x.Id == entity.Id).First()); ;
+            var entidad = _entity.AsNoTracking().Where(x => x.Id == entity.Id).First();
             if (entidad == null)
             {
                 return null;
             }
             entidad.EstadoId = (int)Enums.Estados.Eliminado;
-            await Task.Run(() => _entity.Update(entidad));
-            await _context.SaveChangesAsync();
+            _entity.Update(entidad);
+            _context.SaveChanges();
             return entidad; 
         }
 
-        public async Task<IQueryable<T>> GetAllWithInclude(params Expression<Func<T, object>>[] IncludeProperties)
+        public  IQueryable<T> GetAllWithInclude(params Expression<Func<T, object>>[] IncludeProperties)
         {
             IQueryable<T> query = _entity;
-            query = await Task.Run(() =>
-            {
+
                 foreach (var include in IncludeProperties)
                 {
                     query = query.Include(include);
                 }
-                return query;
-            });
-            
-            return query;
+                return query.AsNoTracking();
+        }
+
+        public IQueryable<T> GetByIdWithInclude(int id, params Expression<Func<T, object>>[] IncludeProperties)
+        {
+            IQueryable<T> query = _entity;
+
+            foreach (var include in IncludeProperties)
+            {
+                query = query.Include(include);
+            }
+            return query.AsNoTracking().Where(x=>x.Id==id);
         }
     }
 }

@@ -13,7 +13,8 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
             builder.HasKey(x => x.Id);
 
             builder.HasMany(x => x.Productos)
-                .WithOne(x => x.Categoria);
+                .WithOne(x => x.Categoria)
+                .HasPrincipalKey(x => x.Id);
 
             builder.Property(x => x.Descripcion)
                 .HasMaxLength(100)
@@ -36,8 +37,17 @@ namespace TecnoStore.Infrastructure.Data.Configuraciones
                 EstadoId = 1
             };
 
-            builder.HasData(categoria);
-            
+            var categoria2 = new Categoria
+            {
+                Id = 2,
+                Descripcion = "Laptops",
+                FechaCreo = DateTime.Now,
+                UsuarioCreo = "Admin",
+                EstadoId = 1
+            };
+
+            builder.HasData(categoria, categoria2);
+
         }
     }
 }

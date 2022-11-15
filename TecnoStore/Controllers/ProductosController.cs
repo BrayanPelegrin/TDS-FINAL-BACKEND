@@ -21,10 +21,10 @@ namespace TecnoStore.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() 
+        public IActionResult Get() 
         {
             var response = new ApiResponse();
-            var query = await Task.FromResult(_repository.GetAllWithInclude(x=> x.Categoria).Result.ToList());
+            var query = _repository.GetAllWithInclude(x=> x.Categoria);
             var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
        
             if(queryMapped.Count() == 0)
@@ -40,12 +40,32 @@ namespace TecnoStore.Api.Controllers
             return Ok(response);
         }
 
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            var response = new ApiResponse();
+            var query = _repository.GetByIdWithInclude(id, x=>x.Categoria);
+            var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
+
+            if (queryMapped == null)
+            {
+                response.Mensaje = "No Hay Registros";
+            }
+            else
+            {
+                response.Success = true;
+                response.Mensaje = "Consulta Exitosa";
+                response.Result = queryMapped;
+            }
+            return Ok(response);
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Save(ProductoDTO producto)
+        public IActionResult Save(ProductoDTO producto)
         {
             var ProductoMapeado = _mapper.Map<Producto>(producto);
 
-             var ProductoGuardado = await _repository.SaveAsync(ProductoMapeado);
+             var ProductoGuardado =  _repository.Save(ProductoMapeado);
             var response = new ApiResponse();
 
             if (ProductoGuardado == null)
@@ -62,29 +82,18 @@ namespace TecnoStore.Api.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(ProductoDTO producto, int id) 
+        public IActionResult Update(ProductoDTO producto, int id) 
         {
             var response = new ApiResponse();
-            var productoBuscado = await _repository.GetByIdAsync(id);
+            var productoBuscado = _repository.GetById(id);
             if (productoBuscado == null)
             {
                 response.Mensaje = "El Producto no existe";
             }
             else
             {
-                var ProductoMapeado = new Producto
-                {
-                    Id = productoBuscado.Id,
-                    Nombre = producto.Nombre,
-                    CategoriaId = producto.CategoriaId,
-                    Descripcion = producto.Descripcion,
-                    EstadoId = (int)Enums.Estados.Activo,
-                    Stock = producto.Stock,
-                    Precio = producto.Precio,
-                    FechaCreo = DateTime.Now,
-                    UsuarioCreo = "Admin"
-                };
-                var ProductoGuardado = await _repository.SaveAsync(ProductoMapeado);
+                productoBuscado = _mapper.Map<Producto>(producto);
+                var ProductoGuardado = _repository.Save(productoBuscado);
 
 
                 if (ProductoGuardado == null)
@@ -103,17 +112,17 @@ namespace TecnoStore.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             var response = new ApiResponse();
-            var productoBuscado = await _repository.GetByIdAsync(id);
+            var productoBuscado = _repository.GetById(id);
             if (productoBuscado == null)
             {
                 response.Mensaje = "El Producto no existe";
             }
             else
             {
-                productoBuscado = await _repository.DeleteAsync(productoBuscado);
+                productoBuscado = _repository.Delete(productoBuscado);
                 response.Success = true;
                 response.Mensaje = "Registro Exitoso";
                 response.Result = productoBuscado;
@@ -126,10 +135,10 @@ namespace TecnoStore.Api.Controllers
         [Authorize]
         [HttpGet]
         [Route("JWT")]
-        public async Task<IActionResult> GetWithJWT()
+        public IActionResult GetWithJWT()
         {
             var response = new ApiResponse();
-            var query = await Task.FromResult(_repository.GetAllWithInclude(x => x.Categoria).Result.ToList());
+            var query = _repository.GetAllWithInclude(x => x.Categoria).ToList();
             var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
 
             if (queryMapped.Count() == 0)
