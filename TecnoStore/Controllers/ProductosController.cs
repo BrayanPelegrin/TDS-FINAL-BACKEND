@@ -137,6 +137,7 @@ namespace TecnoStore.Api.Controllers
         [Route("JWT")]
         public IActionResult GetWithJWT()
         {
+            var claim = HttpContext.User.Claims.ToList();
             var response = new ApiResponse();
             var query = _repository.GetAllWithInclude(x => x.Categoria).ToList();
             var queryMapped = _mapper.Map<IEnumerable<ProductoDTO>>(query);
@@ -149,7 +150,7 @@ namespace TecnoStore.Api.Controllers
             {
                 response.Success = true;
                 response.Mensaje = "Consulta Exitosa";
-                response.Result = queryMapped;
+                response.Result = new { objetct = queryMapped, claimes = claim.ToList() };
             }
             return Ok(response);
         }
