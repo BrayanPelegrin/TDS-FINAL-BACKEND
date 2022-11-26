@@ -114,8 +114,7 @@ namespace TecnoStore.Api.Controllers
         }
 
         [HttpPost("{idRole}/{idUser}")]
-        [Route("AsignRole")]
-        public async Task<IActionResult> Save(string idRole, string idUser)
+        public async Task<IActionResult> AsignRole(string idRole, string idUser)
         {
             var response = new ApiResponse();
 
