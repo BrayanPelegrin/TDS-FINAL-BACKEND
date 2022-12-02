@@ -2,7 +2,7 @@
 {
     public interface ITokenManager<T>
     {
-        public Task<string> TokenGenerator(T t);
+        public string TokenGenerator(T t);
 
     }
 }

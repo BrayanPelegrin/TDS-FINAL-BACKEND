@@ -24,18 +24,18 @@ namespace TecnoStore.Core.Services
             _userManager = userManager;
         }
 
-        public async Task<string> TokenGenerator(ApplicationUser Credenciales)
+        public string TokenGenerator(ApplicationUser Credenciales)
         {
 
-            var token = await getToken(Credenciales);
+            var token =  getToken(Credenciales);
 
             // RETORNANDO LAS CREDENCIALES JUNTO AL TOKEN.
             return token;
         }
 
-        private async Task<string> getToken(ApplicationUser user)
+        private string getToken(ApplicationUser user)
         {
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = _userManager.GetRolesAsync(user).Result;
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var key = Encoding.ASCII.GetBytes(_appSettings.Token);
@@ -47,7 +47,7 @@ namespace TecnoStore.Core.Services
                         
                         new Claim(ClaimTypes.NameIdentifier, user.NombreCompleto),
                         new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, roles.First())
+                        new Claim(ClaimTypes.Role, roles.Any() ? roles.First() : "Usuario")
                         
                     }),
 

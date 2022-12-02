@@ -113,7 +113,7 @@ namespace TecnoStore.Api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{idRole}/{idUser}")]
+        [HttpPost("[action]/{idRole}/{idUser}")]
         public async Task<IActionResult> AsignRole(string idRole, string idUser)
         {
             var response = new ApiResponse();
@@ -144,7 +144,44 @@ namespace TecnoStore.Api.Controllers
                 }
                 else
                 {
-                    response.Mensaje = "Ocurrio un Error al Crear el Producto";
+                    response.Mensaje = "Uno o ambos de los Id's no son valido";
+                }
+            }
+            return Ok(response);
+        }
+ 
+        [HttpDelete("[action]/{idRole}/{idUser}")]
+        public async Task<IActionResult> UnAsignRole(string idRole, string idUser)
+        {
+            var response = new ApiResponse();
+
+            if (string.IsNullOrEmpty(idRole) || string.IsNullOrEmpty(idRole))
+            {
+                response.Mensaje = "Uno de los Id no es valido";
+            }
+            else
+            {
+                var resultRole = await _roleManager.FindByIdAsync(idRole);
+                var resultuser = await _userManager.FindByIdAsync(idUser);
+
+                if (resultRole != null && resultuser != null)
+                {
+                    var result = await _userManager.RemoveFromRoleAsync(resultuser, resultRole.Name);
+                    if (result.Succeeded)
+                    {
+                        response.Success = true;
+                        response.Mensaje = "Rol Removido Exitosamente";
+                        response.Result = new { User = resultuser.UserName, Role = resultRole.Name };
+                    }
+                    else
+                    {
+                        response.Mensaje = "Ocurrio un Error al Remover el Rol";
+                    }
+
+                }
+                else
+                {
+                    response.Mensaje = "Uno o ambos de los Id's no son valido";
                 }
             }
             return Ok(response);

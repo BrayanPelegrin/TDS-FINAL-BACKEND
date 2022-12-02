@@ -31,7 +31,7 @@ namespace TecnoStore.Api.Controllers
             if (isSuccess.Succeeded)
             {
                 var usuario = await _userManager.FindByEmailAsync(user.Email);
-                var token = await _tokenGenerator.TokenGenerator(usuario);
+                var token =  _tokenGenerator.TokenGenerator(usuario);
                 response.Success = true;
                 response.Mensaje = "Inicio de Sesion Exitoso!";
                 response.Result = token;
